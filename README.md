@@ -1,6 +1,6 @@
 # Kronos
 
-Si van a agregar librerias, porfavor coloquenlas en este readme.
+- Cuando agreguen librerias, porfavor coloquenlas en este readme junto a su version.
 
 ## Ejecución
 
