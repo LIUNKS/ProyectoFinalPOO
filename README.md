@@ -1,10 +1,11 @@
 # Kronos
 
-
+Si van a agregar librerias, porfavor coloquenlas en este readme.
 
 ## Ejecución
 
-  1. Cargar el archivo sql para obtener la estructura de la base de datos
+  1. Cargar el archivo sql (Apolo) para obtener la estructura de la base de datos
+  2. La carpeta "Minerva" es la que tiene el proyecto java
 
 ## Programas De Desarrollo
 
