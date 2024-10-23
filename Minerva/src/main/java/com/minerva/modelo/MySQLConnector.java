@@ -61,25 +61,61 @@ public class MySQLConnector {
         }       
     }
     
-    public ResultSet consultaSQL(String query) throws SQLException {
+    public ResultSet consultaSQL(String query) {
         establecerConexion();
-        statement = conexion.createStatement();        
-        resultSet = statement.executeQuery(query);
+
+        try {
+            statement = conexion.createStatement();        
+            resultSet = statement.executeQuery(query);
+
+            return resultSet;
+        } catch (SQLException e) {
+            System.out.println("ERROR: " + e.toString());
+        } finally {
+            cerrarConexion();
+        }
         
-        cerrarConexion();
         return resultSet;
     }
     
-    // PARA EVITAR INYECCIONES SQL PERO NO SE SI DEBERIA IMPLEMENTARLO PARA ESTE PROYECTO XD
+    // PARA EVITAR INYECCIONES O CONSULTAS DINAMICAS SQL PERO NO SE SI
+    // DEBERIA IMPLEMENTARLO PARA ESTE PROYECTO XD
     // LO DEJO AQUI POR LAS DUDAS
-    public ResultSet consultaSQLDinamica(String query) throws SQLException {
+    public ResultSet consultaSQLDinamicaString(String query, int numParametros, int parametro) {
         establecerConexion();
-
-        preparedStatement = conexion.prepareStatement(query);
-        preparedStatement.setInt(1, 0);
-        resultSet = preparedStatement.executeQuery();
         
-        cerrarConexion();
+        try {
+            preparedStatement = conexion.prepareStatement(query);
+            preparedStatement.setInt(numParametros, parametro);
+            resultSet = preparedStatement.executeQuery();
+
+            cerrarConexion();
+            return resultSet;
+        } catch (SQLException e) {
+            System.out.println("ERROR: " + e.toString());
+        } finally {
+            cerrarConexion();
+        }
+        
         return resultSet;
     }
+    
+    public ResultSet consultaSQLDinamicaInt(String query, int numParametros, String parametro) {
+        establecerConexion();
+        
+        try {
+            preparedStatement = conexion.prepareStatement(query);
+            preparedStatement.setString(numParametros, parametro);
+            resultSet = preparedStatement.executeQuery();
+
+            cerrarConexion();
+            return resultSet;
+        } catch (SQLException e) {
+            System.out.println("ERROR: " + e.toString());
+        } finally {
+            cerrarConexion();
+        }
+        
+        return resultSet;
+    } 
 }
