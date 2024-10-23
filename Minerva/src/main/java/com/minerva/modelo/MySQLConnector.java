@@ -15,7 +15,7 @@ public class MySQLConnector implements AutoCloseable{
     private Connection conexion = null;
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String USUARIO = "root";
-    private static final String CONTRASEÑA = "Drakotako147258369#";
+    private static final String CONTRASEÑA = "#";
     private static final String BD = "Apolo";
     private static final String IP = "localhost";
     private static final String PUERTO = "3306";
