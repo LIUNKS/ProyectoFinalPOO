@@ -15,7 +15,7 @@ public class MySQLConnector implements AutoCloseable{
     private Connection conexion = null;
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String USUARIO = "root";
-    private static final String CONTRASEÑA = "#";
+    private static final String CONTRASEÑA = "Drakotako147258369#";
     private static final String BD = "Apolo";
     private static final String IP = "localhost";
     private static final String PUERTO = "3306";
@@ -39,14 +39,11 @@ public class MySQLConnector implements AutoCloseable{
 
         try {
             statement = conexion.createStatement();        
-            resultSet = statement.executeQuery(query);
-
-            return resultSet; 
+            resultSet = statement.executeQuery(query);                                    
         } catch (SQLException e) {
             System.out.println("ERROR: " + e.toString());
-        } 
-        return null; // Retorna null si hay un error
-
+        }
+        return resultSet;
     }
     
     // METODO PARA HACER CONSULTAS SQL DINAMICAS 
@@ -66,12 +63,11 @@ public class MySQLConnector implements AutoCloseable{
             }
 
             resultSet = preparedStatement.executeQuery();
-            return resultSet;
         } catch (SQLException e) {
             System.out.println("ERROR: " + e.toString());
-        }
-
-        return null; // Retorna null si hay un error
+        } 
+        
+        return resultSet;
     }
  
     private void establecerConexion() {
@@ -89,43 +85,39 @@ public class MySQLConnector implements AutoCloseable{
         }
     }
     
-    private void cerrarConexion() {
+    public void cerrarConexion() {
         try {
             if (conexion != null && !conexion.isClosed()) {
                 conexion.close();
                 System.out.println("CONEXION CON LA BASE DE DATOS " + BD + " CERRADA");
-            } else {
-                System.out.println("LA CONEXION CON LA BASE DE DATOS " + BD + " YA ESTABA CERRADA");
             }
         } catch (SQLException e) {
             System.out.println("CONEXION CON LA BASE DE DATOS " + BD + " NO PUDO SER CERRADA");
             System.out.println("ERROR: " + e.toString());
         }       
     }
-
-    @Override
-    public void close() {       
-        cerrarRecursos();
-        cerrarConexion();       
-    }
     
-    private void cerrarRecursos() {
+    public void cerrarRecursos() {
         try {
-            if (preparedStatement != null) {
+            if (preparedStatement != null && !preparedStatement.isClosed()) {
                 preparedStatement.close();
             }
             
-            if (statement != null) {
+            if (statement != null && !statement.isClosed()) {
                 statement.close();
             }
             
-            if (statement != null) {
+            if (statement != null && !statement.isClosed()) {
                 resultSet.close();
             }
-            System.out.println("RECURSOS CERRADOS");
         } catch (SQLException e) {
             System.out.println("ERROR: " + e.toString());
         }
     }
 
+    @Override
+    public void close() {       
+        cerrarRecursos();
+        cerrarConexion();
+    }
 }
