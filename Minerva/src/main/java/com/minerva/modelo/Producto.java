@@ -1,5 +1,7 @@
 package com.minerva.modelo;
 
+import java.sql.ResultSet;
+
 /**
  *
  * @author L
@@ -14,9 +16,23 @@ public class Producto {
     
     private String ubicacionAlmacen;
 
-    public Producto() {
+    public Producto() {         
+        consultarProductos();
     }
     
-    
+    // EJEMPLO PARA CONSULTAS 
+    public void consultarProductos() {
+        String query = "SELECT * FROM cliente";
+        try (MySQLConnector sql = new MySQLConnector()){
+            ResultSet datos = sql.consultaSQL(query);
+            while (datos.next()) {
+                System.out.println("hola");
+                String dato = datos.getString(2);
+                System.out.println(dato);
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.toString());
+        }
+    }
     
 }
