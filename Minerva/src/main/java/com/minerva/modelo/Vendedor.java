@@ -43,7 +43,9 @@ public class Vendedor {
     }
 
     public void setUsuario(String Usuario) {
-        this.Usuario = Usuario;
+        if (Usuario!=null) {
+           this.Usuario = Usuario;
+        }
     }
 
     public String getContrasena() {
@@ -51,7 +53,9 @@ public class Vendedor {
     }
 
     public void setContrasena(String Contrasena) {
-        this.Contrasena = Contrasena;
+        if (Contrasena!=null) {
+           this.Contrasena = Contrasena;
+        }
     }
     
 }
