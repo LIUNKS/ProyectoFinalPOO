@@ -21,11 +21,13 @@ public class MySQLConnector {
     private static final String PUERTO = "3306";
     
     private static final String URL = "jdbc:mysql://" + IP +":" + PUERTO + "/ " + BD;
-
-    private PreparedStatement preparedStatement = null;
-    private Statement statement = null;
     
-    private ResultSet resultSet = null; 
+    // VARIABLES PARA LAS QUERY
+    private PreparedStatement preparedStatement;
+    private Statement statement;
+    
+    // VARIABLE PARA GUARDAR EL RESULTADO DE LA BASE DE DATOS
+    private ResultSet resultSet; 
     
     public MySQLConnector() {
     }
@@ -34,9 +36,9 @@ public class MySQLConnector {
         try {
             // SE CARGA EL DRIVER 
             Class.forName(DRIVER);
-            // SE ESTABLECE LA CONEXION
-            conexion = DriverManager.getConnection(URL, USUARIO, CONTRASEÑA);  
+            conexion = DriverManager.getConnection(URL, USUARIO, CONTRASEÑA);
             
+            limpiarVariableConsulta();
             System.out.println("CONEXION CON LA BASE DE DATOS " + BD + " ESTABLECIDA");
         } catch (SQLException e) {
             System.out.println("CONEXION CON LA BASE DE DATOS " + BD + " RECHAZADA");
@@ -78,44 +80,35 @@ public class MySQLConnector {
         return resultSet;
     }
     
-    // PARA EVITAR INYECCIONES O CONSULTAS DINAMICAS SQL PERO NO SE SI
-    // DEBERIA IMPLEMENTARLO PARA ESTE PROYECTO XD
-    // LO DEJO AQUI POR LAS DUDAS
-    public ResultSet consultaSQLDinamicaString(String query, int numParametros, int parametro) {
+    public ResultSet consultaSQLDinamica(String query, int numParametros, Object parametro) {
         establecerConexion();
-        
+
         try {
             preparedStatement = conexion.prepareStatement(query);
-            preparedStatement.setInt(numParametros, parametro);
-            resultSet = preparedStatement.executeQuery();
 
-            cerrarConexion();
+            // Determinar el tipo de parámetro y establecerlo en el PreparedStatement
+            if (parametro instanceof Integer) {
+                preparedStatement.setInt(numParametros, (Integer) parametro);
+            } else if (parametro instanceof String) {
+                preparedStatement.setString(numParametros, (String) parametro);
+            } else {
+                throw new IllegalArgumentException("Tipo de parámetro no soportado");
+            }
+
+            resultSet = preparedStatement.executeQuery();
             return resultSet;
         } catch (SQLException e) {
             System.out.println("ERROR: " + e.toString());
         } finally {
             cerrarConexion();
         }
-        
-        return resultSet;
+
+        return null; // Retorna null si hay un error
     }
     
-    public ResultSet consultaSQLDinamicaInt(String query, int numParametros, String parametro) {
-        establecerConexion();
-        
-        try {
-            preparedStatement = conexion.prepareStatement(query);
-            preparedStatement.setString(numParametros, parametro);
-            resultSet = preparedStatement.executeQuery();
-
-            cerrarConexion();
-            return resultSet;
-        } catch (SQLException e) {
-            System.out.println("ERROR: " + e.toString());
-        } finally {
-            cerrarConexion();
-        }
-        
-        return resultSet;
-    } 
+    private void limpiarVariableConsulta() {
+        preparedStatement = null;
+        statement = null;    
+        resultSet = null; 
+    }
 }
