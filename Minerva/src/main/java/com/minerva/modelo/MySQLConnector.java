@@ -31,37 +31,6 @@ public class MySQLConnector {
     
     public MySQLConnector() {
     }
- 
-    private void establecerConexion() {
-        try {
-            // SE CARGA EL DRIVER 
-            Class.forName(DRIVER);
-            conexion = DriverManager.getConnection(URL, USUARIO, CONTRASEÑA);
-            
-            limpiarVariableConsulta();
-            System.out.println("CONEXION CON LA BASE DE DATOS " + BD + " ESTABLECIDA");
-        } catch (SQLException e) {
-            System.out.println("CONEXION CON LA BASE DE DATOS " + BD + " RECHAZADA");
-            System.out.println("ERROR: " + e.toString());
-        } catch (Exception e) {
-            System.out.println("ERROR: " + e.toString());
-        }
-    }
-    
-    private void cerrarConexion() {
-        try {
-            // SI CONECTAR ES DIFERENTE DE NULO Y DIFERENTE DE ABIERTO SE CIERRA LA CONEXION
-            if (conexion != null && !conexion.isClosed()) {
-                conexion.close();
-                System.out.println("CONEXION CON LA BASE DE DATOS " + BD + " CERRADA");
-            } else {
-                System.out.println("LA CONEXION CON LA BASE DE DATOS " + BD + " YA ESTABA CERRADA");
-            }
-        } catch (SQLException e) {
-            System.out.println("CONEXION CON LA BASE DE DATOS " + BD + " NO PUDO SER CERRADA");
-            System.out.println("ERROR: " + e.toString());
-        }       
-    }
     
     public ResultSet consultaSQL(String query) {
         establecerConexion();
@@ -76,8 +45,8 @@ public class MySQLConnector {
         } finally {
             cerrarConexion();
         }
-        
-        return resultSet;
+
+        return null; // Retorna null si hay un error
     }
     
     public ResultSet consultaSQLDinamica(String query, int numParametros, Object parametro) {
@@ -111,4 +80,36 @@ public class MySQLConnector {
         statement = null;    
         resultSet = null; 
     }
+ 
+    private void establecerConexion() {
+        try {
+            // SE CARGA EL DRIVER 
+            Class.forName(DRIVER);
+            conexion = DriverManager.getConnection(URL, USUARIO, CONTRASEÑA);
+            
+            limpiarVariableConsulta();
+            System.out.println("CONEXION CON LA BASE DE DATOS " + BD + " ESTABLECIDA");
+        } catch (SQLException e) {
+            System.out.println("CONEXION CON LA BASE DE DATOS " + BD + " RECHAZADA");
+            System.out.println("ERROR: " + e.toString());
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.toString());
+        }
+    }
+    
+    private void cerrarConexion() {
+        try {
+            // SI CONECTAR ES DIFERENTE DE NULO Y DIFERENTE DE ABIERTO SE CIERRA LA CONEXION
+            if (conexion != null && !conexion.isClosed()) {
+                conexion.close();
+                System.out.println("CONEXION CON LA BASE DE DATOS " + BD + " CERRADA");
+            } else {
+                System.out.println("LA CONEXION CON LA BASE DE DATOS " + BD + " YA ESTABA CERRADA");
+            }
+        } catch (SQLException e) {
+            System.out.println("CONEXION CON LA BASE DE DATOS " + BD + " NO PUDO SER CERRADA");
+            System.out.println("ERROR: " + e.toString());
+        }       
+    }
+    
 }
