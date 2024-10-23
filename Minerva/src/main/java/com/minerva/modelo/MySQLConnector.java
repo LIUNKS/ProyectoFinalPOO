@@ -23,11 +23,11 @@ public class MySQLConnector implements AutoCloseable{
     private static final String URL = "jdbc:mysql://" + IP +":" + PUERTO + "/ " + BD;
     
     // VARIABLES PARA LAS QUERY
-    private PreparedStatement preparedStatement;
-    private Statement statement;
+    private PreparedStatement preparedStatement  = null;
+    private Statement statement  = null;
     
     // VARIABLE PARA GUARDAR EL RESULTADO DE LA BASE DE DATOS
-    private ResultSet resultSet; 
+    private ResultSet resultSet  = null; 
     
     public MySQLConnector() {
         
@@ -35,7 +35,6 @@ public class MySQLConnector implements AutoCloseable{
     
     // METODO PARA HACER CONSULTAS SQL SIMPLES 
     public ResultSet consultaSQL(String query) {
-        limpiarVariableConsulta();        
         establecerConexion();
 
         try {
@@ -52,7 +51,6 @@ public class MySQLConnector implements AutoCloseable{
     
     // METODO PARA HACER CONSULTAS SQL DINAMICAS 
     public ResultSet consultaSQLDinamica(String query, int numParametros, Object parametro) {
-        limpiarVariableConsulta();
         establecerConexion();
 
         try {
@@ -75,13 +73,6 @@ public class MySQLConnector implements AutoCloseable{
 
         return null; // Retorna null si hay un error
     }
-    
-    // METODO PARA LIMPIAR LAS ANTERIORES CONSULTAS SQL 
-    private void limpiarVariableConsulta() {
-        preparedStatement = null;
-        statement = null;    
-        resultSet = null; 
-    }
  
     private void establecerConexion() {
         try {
@@ -100,7 +91,6 @@ public class MySQLConnector implements AutoCloseable{
     
     private void cerrarConexion() {
         try {
-            // SI CONECTAR ES DIFERENTE DE NULO Y DIFERENTE DE ABIERTO SE CIERRA LA CONEXION
             if (conexion != null && !conexion.isClosed()) {
                 conexion.close();
                 System.out.println("CONEXION CON LA BASE DE DATOS " + BD + " CERRADA");
@@ -114,8 +104,28 @@ public class MySQLConnector implements AutoCloseable{
     }
 
     @Override
-    public void close() {
-        cerrarConexion();    
+    public void close() {       
+        cerrarRecursos();
+        cerrarConexion();       
     }
     
+    private void cerrarRecursos() {
+        try {
+            if (preparedStatement != null) {
+                preparedStatement.close();
+            }
+            
+            if (statement != null) {
+                statement.close();
+            }
+            
+            if (statement != null) {
+                resultSet.close();
+            }
+            System.out.println("RECURSOS CERRADOS");
+        } catch (SQLException e) {
+            System.out.println("ERROR: " + e.toString());
+        }
+    }
+
 }
