@@ -11,7 +11,7 @@ import java.sql.Statement;
  *
  * @author L
  */
-public class MySQLConnector {
+public class MySQLConnector implements AutoCloseable{
     private Connection conexion = null;
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String USUARIO = "root";
@@ -42,14 +42,12 @@ public class MySQLConnector {
             statement = conexion.createStatement();        
             resultSet = statement.executeQuery(query);
 
-            return resultSet;
+            return resultSet; 
         } catch (SQLException e) {
             System.out.println("ERROR: " + e.toString());
-        } finally {
-            cerrarConexion();
-        }
-
+        } 
         return null; // Retorna null si hay un error
+
     }
     
     // METODO PARA HACER CONSULTAS SQL DINAMICAS 
@@ -73,8 +71,6 @@ public class MySQLConnector {
             return resultSet;
         } catch (SQLException e) {
             System.out.println("ERROR: " + e.toString());
-        } finally {
-            cerrarConexion();
         }
 
         return null; // Retorna null si hay un error
@@ -115,6 +111,11 @@ public class MySQLConnector {
             System.out.println("CONEXION CON LA BASE DE DATOS " + BD + " NO PUDO SER CERRADA");
             System.out.println("ERROR: " + e.toString());
         }       
+    }
+
+    @Override
+    public void close() {
+        cerrarConexion();    
     }
     
 }
