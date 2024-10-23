@@ -85,7 +85,7 @@ public class MySQLConnector implements AutoCloseable{
         }
     }
     
-    public void cerrarConexion() {
+    private void cerrarConexion() {
         try {
             if (conexion != null && !conexion.isClosed()) {
                 conexion.close();
@@ -97,7 +97,7 @@ public class MySQLConnector implements AutoCloseable{
         }       
     }
     
-    public void cerrarRecursos() {
+    private void cerrarRecursos() {
         try {
             if (preparedStatement != null && !preparedStatement.isClosed()) {
                 preparedStatement.close();
