@@ -30,9 +30,12 @@ public class MySQLConnector {
     private ResultSet resultSet; 
     
     public MySQLConnector() {
+        
     }
     
+    // METODO PARA HACER CONSULTAS SQL SIMPLES 
     public ResultSet consultaSQL(String query) {
+        limpiarVariableConsulta();        
         establecerConexion();
 
         try {
@@ -49,7 +52,9 @@ public class MySQLConnector {
         return null; // Retorna null si hay un error
     }
     
+    // METODO PARA HACER CONSULTAS SQL DINAMICAS 
     public ResultSet consultaSQLDinamica(String query, int numParametros, Object parametro) {
+        limpiarVariableConsulta();
         establecerConexion();
 
         try {
@@ -75,6 +80,7 @@ public class MySQLConnector {
         return null; // Retorna null si hay un error
     }
     
+    // METODO PARA LIMPIAR LAS ANTERIORES CONSULTAS SQL 
     private void limpiarVariableConsulta() {
         preparedStatement = null;
         statement = null;    
@@ -87,12 +93,11 @@ public class MySQLConnector {
             Class.forName(DRIVER);
             conexion = DriverManager.getConnection(URL, USUARIO, CONTRASEÑA);
             
-            limpiarVariableConsulta();
             System.out.println("CONEXION CON LA BASE DE DATOS " + BD + " ESTABLECIDA");
         } catch (SQLException e) {
             System.out.println("CONEXION CON LA BASE DE DATOS " + BD + " RECHAZADA");
             System.out.println("ERROR: " + e.toString());
-        } catch (Exception e) {
+        } catch (ClassNotFoundException e) {
             System.out.println("ERROR: " + e.toString());
         }
     }
