@@ -52,7 +52,7 @@ public class MySQLConnector implements AutoCloseable{
 
         try {
             preparedStatement = conexion.prepareStatement(query);
-
+            
             // Determinar el tipo de parámetro y establecerlo en el PreparedStatement
             if (parametro instanceof Integer) {
                 preparedStatement.setInt(numParametros, (Integer) parametro);

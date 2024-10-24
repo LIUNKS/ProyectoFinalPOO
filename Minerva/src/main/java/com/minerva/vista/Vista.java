@@ -1,9 +1,8 @@
 package com.minerva.vista;
 
-import com.minerva.modelo.MySQLConnector;
+import com.minerva.controlador.ControladorLogin;
 import com.minerva.modelo.Producto;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import com.minerva.modelo.Vendedor;
 
 /**
  *
@@ -15,8 +14,17 @@ public class Vista {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        Producto h = new Producto();
-
+        ControladorLogin login = new ControladorLogin();
+        
+        boolean a = login.validarCredenciales("admin", "1234");
+        
+        System.out.println("");
+        System.out.println("ESTA ES EL AREA DE LA VISTA");
+         if (a) {
+             System.out.println("CREDENCIALES VALIDAS");
+        } else {
+             System.out.println("CREDENCIALES NO VALIDAS");
+         }
     }
       
 }

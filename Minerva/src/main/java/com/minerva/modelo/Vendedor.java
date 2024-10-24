@@ -1,5 +1,7 @@
 package com.minerva.modelo;
 
+import java.sql.ResultSet;
+
 /**
  *
  * @author A
@@ -57,5 +59,53 @@ public class Vendedor {
            this.Contrasena = Contrasena;
         }
     }
+    
+    // VALIDA SI EL USUARIO EXISTE EN LA BASE DE DATOS
+    public boolean validarUsuarioDB(String usuario) {
+        final String CONSULTA_SQL = "SELECT Usuario FROM vendedor WHERE Usuario=?";
+        ResultSet resultadoConsulta;
+        
+        try (MySQLConnector conexionDB = new MySQLConnector()){
+            resultadoConsulta = conexionDB.consultaSQLDinamica(CONSULTA_SQL, 1, usuario);
+            
+            while (resultadoConsulta.next()) {        
+                String usuarioDB = resultadoConsulta.getString("Usuario");
+                if (usuarioDB.equals(usuario)) {
+                    System.out.println("El usuario existe");
+                    return true; // Retorna true si el usuario existe en la base de datos
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("ERROR: " + e.toString());
+        }       
+        return false; // Retorna false si el usuario no existe en la base de datos
+    }
+    
+    // VALIDA EL USUARIO Y CONTRASEÑA
+    public boolean validarCredenciales(String usuario, String contrasena) {        
+        if (validarUsuarioDB(usuario)) {
+            final String CONSULTA_SQL = "SELECT Contrasena FROM vendedor WHERE Usuario=?";
+            ResultSet resultadoConsulta;
+
+            try (MySQLConnector conexionDB = new MySQLConnector()){
+                
+                resultadoConsulta = conexionDB.consultaSQLDinamica(CONSULTA_SQL, 1, usuario);
+                
+                while (resultadoConsulta.next()) {        
+                    String contrasenaDB = resultadoConsulta.getString("Contrasena");
+                    
+                    if (contrasenaDB.equals(contrasena)) {
+                        System.out.println("Credenciales validas");
+                        return true;  // Retorna true si las credenciales son validas
+                    }
+                }
+            } catch (Exception e) {
+                System.out.println("ERROR: " + e.toString());
+            }
+        }        
+        return false; // Retorna false si las credenciales son invalidas
+    }
+    
+    
     
 }
