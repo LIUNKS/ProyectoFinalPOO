@@ -1,6 +1,7 @@
 package com.minerva.controlador;
 
 import com.minerva.modelo.Vendedor;
+import com.minerva.modelo.Autenticacion;
 
 /**
  *
@@ -9,7 +10,7 @@ import com.minerva.modelo.Vendedor;
 public class ControladorLogin {
     private String usuario;
     private String contraseña;
-    private Vendedor vendedor = new Vendedor();
+    private Autenticacion vendedor = new Vendedor();
 
     public ControladorLogin() {
         

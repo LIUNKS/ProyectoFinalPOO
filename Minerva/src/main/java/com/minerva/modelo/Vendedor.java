@@ -6,7 +6,7 @@ import java.sql.ResultSet;
  *
  * @author A
  */
-public class Vendedor {
+public class Vendedor implements Autenticacion{
     private int VendedorID;
     private String Nombres;
     private String Usuario;
@@ -61,6 +61,7 @@ public class Vendedor {
     }
     
     // VALIDA SI EL USUARIO EXISTE EN LA BASE DE DATOS
+    @Override
     public boolean validarUsuarioDB(String usuario) {
         final String CONSULTA_SQL = "SELECT Usuario FROM vendedor WHERE Usuario=?";
         ResultSet resultadoConsulta;
@@ -82,6 +83,7 @@ public class Vendedor {
     }
     
     // VALIDA EL USUARIO Y CONTRASEÑA
+    @Override
     public boolean validarCredenciales(String usuario, String contrasena) { 
         // VALIDAMOS SI EL USUARIO EXISTE EN EL IF 
         if (validarUsuarioDB(usuario)) {
