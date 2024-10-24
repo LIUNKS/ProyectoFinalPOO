@@ -8,15 +8,13 @@ import com.minerva.modelo.Autenticacion;
  * @author L
  */
 public class ControladorLogin {
-    private String usuario;
-    private String contraseña;
-    private Autenticacion vendedor = new Vendedor();
+    private static Autenticacion vendedor = new Vendedor();
 
     public ControladorLogin() {
         
     }
     
-    public boolean validarCredenciales(String usuario, String contrasena) {
+    public static boolean validarCredenciales(String usuario, String contrasena) {
         boolean credenciales = vendedor.validarCredenciales(usuario, contrasena);
         if (credenciales) {
             return true; // SI LA CONTRASEÑA ES VALIDA DEVUELVE TRUE
