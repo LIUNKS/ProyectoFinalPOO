@@ -82,7 +82,8 @@ public class Vendedor {
     }
     
     // VALIDA EL USUARIO Y CONTRASEÑA
-    public boolean validarCredenciales(String usuario, String contrasena) {        
+    public boolean validarCredenciales(String usuario, String contrasena) { 
+        // VALIDAMOS SI EL USUARIO EXISTE EN EL IF 
         if (validarUsuarioDB(usuario)) {
             final String CONSULTA_SQL = "SELECT Contrasena FROM vendedor WHERE Usuario=?";
             ResultSet resultadoConsulta;
