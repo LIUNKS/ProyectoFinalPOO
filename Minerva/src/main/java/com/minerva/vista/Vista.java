@@ -14,6 +14,8 @@ public class Vista {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
+        
+        // EJEMPLO DE USO 
         ControladorLogin login = new ControladorLogin();
         
         boolean a = login.validarCredenciales("admin", "1234");
